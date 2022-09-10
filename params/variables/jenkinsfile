@@ -1,0 +1,24 @@
+pipeline{
+    agent any
+
+    environment{
+        def myString = "string sample"
+        def myInt = 100
+        def myBool = true
+    }
+
+    stages{
+        stage("variables"){
+            steps{
+                echo "value for string ${myString}"
+                echo "value for integer ${myInt}"
+                echo "value for boolean ${myBool}"
+                //accessing builtin environment variables
+                echo "Running ${env.BUILD_ID} on ${env.JENKINS_URL}"
+            }
+        }
+    }
+
+}
+
+

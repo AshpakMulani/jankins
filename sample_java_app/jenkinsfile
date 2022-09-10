@@ -1,0 +1,45 @@
+pipeline {
+   // running pipeline using any agent 
+    agent any
+    // start defining statge in pipeline. In this sample pipeline
+    // we will have 'clean up', 'clone repo', 'build' and 'test' stages 
+    stages {
+        stage("Clean Up"){
+            steps {
+                // in this stage remove all existing dirs from root of pipeline
+                // before we start.
+                deleteDir()
+            }
+        }
+        stage("Clone Repo"){
+            steps {
+                // get or git clone code locally in root
+                sh "git clone https://github.com/jenkins-docs/simple-java-maven-app.git"
+            }
+        }
+        stage("Build"){
+            steps {
+                // got to cloned git directory 
+                dir("simple-java-maven-app") {
+                    // maven command to clean existing compiled app 'clean'
+                    // and install recompiles app and create executable or jar from java code
+                    sh "mvn clean install"
+                }
+            }
+        }
+        stage("Test"){
+            steps {
+                dir("simple-java-maven-app") {
+                    // maven command to run unit test cases
+                    sh "mvn test"
+
+                }
+            }
+        }
+    }
+}
+
+
+
+
+

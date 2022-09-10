@@ -1,0 +1,22 @@
+pipeline{
+    agent any
+
+    parameters{
+        // variable names and value are preferred as camel case in jenkins 
+
+        //define a boolean param 
+        booleanParam(defaultValue: false,
+                    description: "Enable service ?",
+                    name : "myBoolean")
+    }
+
+    stages{
+        stage("Demo"){
+            steps{
+                // access the param value using string interpolation
+                // syntax as mentioned below
+                echo "Bolean param is set to : ${params.myBoolean}"
+            }
+        }
+    }
+}
