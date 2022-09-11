@@ -1,0 +1,34 @@
+pipeline{
+    agent any
+    
+    parameters{
+        string(defaultValue: "none",
+                    description: "Enter other job name ?",
+                    name : "jobName")
+    }
+
+    stages{
+        stage("Demo"){
+            steps{
+                echo "Triggering other job : ${params.jobName}"
+                // call another job/pipeline by using pipeline name provided 
+                // as input param in UI
+                build job : "${params.jobName}", 
+                    parameters:
+                     [
+                        // boolean param value inputs
+                        [$class: 'BooleanParameterValue', name: 'myBoolean', value: true],
+                        // string param value inputs
+                        [$class: 'StringParameterValue', name: 'deployEnv', value: 'DEV'],
+                        // dropdown param value inputs. It can be sent same as STRING
+                        [$class: 'StringParameterValue', name: 'deployEnvChoice', value: 'QA']
+                    ]
+            }
+        }
+        stage("Complete"){
+            steps{
+                echo "Pipeline completed."
+            }
+        }
+    }
+}

@@ -1,0 +1,37 @@
+pipeline{
+    agent any
+
+    parameters{
+        booleanParam(defaultValue: false,
+                    description: "Enable complete stage ?",
+                    name : "myBoolean")
+    }
+
+    stages{       
+        stage("Demo"){
+            steps{
+                // Groovy script is added in 'script' tag. IT allow us to use loops, conditions
+                // and other complex logic in pipeline declaration
+                script{
+                        // check if tickbox is not ticked
+                        if(params.myBoolean == false){
+                            echo "Bolean param is set to : ${params.myBoolean} so stop execution"
+                            // set return status of build to abort
+                            currentBuild.result = 'ABORTED'
+                            // abort the build process and by giving message
+                            error("Aborting the build.")
+                        }
+                        else{
+                            echo "Bolean param is set to : ${params.myBoolean} so continue execution"
+                        }
+                }   
+                     echo "Demo stage.."       
+            }
+        }
+        stage("Complete"){
+            steps{               
+                    echo "Finishing execution..."              
+            }
+        }
+    }
+}

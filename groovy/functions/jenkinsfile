@@ -1,0 +1,33 @@
+pipeline{
+    agent any
+    parameters{
+        string(defaultValue: "enter input",
+                    description: "Enter sample message",
+                    name : "myMessage")
+    }
+
+    stages{       
+        stage("Demo"){
+            steps{
+                // calling function with input param given by user
+                myFunc(param.myMessage)            
+        }
+        }
+        stage("Complete"){
+            steps{               
+                    echo "Finishing execution..."              
+            }
+        }
+    }
+}
+
+// definining function
+def myFunc(String message){
+    // this is local function variable
+    // also function cant access variables from outside we need to pass them 
+    // explicitly to function 
+    String localString = "Hello, "
+    echo "${localString}${message}"
+}
+
+
